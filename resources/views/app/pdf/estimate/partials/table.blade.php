@@ -32,6 +32,11 @@
                 class="pl-0 text-left item-cell"
             >
                 <span>{{ $item->name }}</span><br>
+                @if($item->width && $item->length)
+                    <div style="font-size: 11px; color: #4338ca; margin-top: 1px; margin-bottom: 2px;">
+                        @if($item->count && $item->count > 1){{ $item->count }}× @endif{{ $item->width }} ft × {{ $item->length }} ft ({{ $item->area ?? ($item->width * $item->length * ($item->count ?: 1)) }} sq ft)
+                    </div>
+                @endif
                 <span
                     class="item-description"
                 >

@@ -41,6 +41,11 @@ class ItemsRequest extends FormRequest
             'price' => ['required'],
             'unit_id' => ['nullable'],
             'description' => ['nullable'],
+            'sku' => ['nullable', 'string', 'max:100'],
+            'track_inventory' => ['nullable', 'boolean'],
+            'initial_quantity' => ['nullable', 'numeric', 'min:0'],
+            'quantity' => ['nullable', 'numeric', 'min:0'],
+            'reorder_level' => ['nullable', 'numeric', 'min:0'],
             ...$this->customFieldRules(),
         ];
     }

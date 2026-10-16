@@ -45,12 +45,17 @@ class Item extends Model
      */
     protected $appends = [
         'formattedCreatedAt',
+        'quantitySold',
     ];
 
     protected function casts(): array
     {
         return [
             'price' => 'integer',
+            'track_inventory' => 'boolean',
+            'initial_quantity' => 'float',
+            'quantity' => 'float',
+            'reorder_level' => 'float',
         ];
     }
 
@@ -231,5 +236,29 @@ class Item extends Model
 
         return Carbon::parse($this->created_at)
             ->translatedFormat(CompanySetting::getSetting('carbon_date_format', $company));
+    }
+
+    /**
+     * Total quantity sold across all invoices.
+     */
+    public function getQuantitySoldAttribute(): float
+    {
+        if (! $this->exists) {
+            return 0.0;
+        }
+
+        return (float) $this->invoiceItems()->sum('quantity');
+    }
+
+    public function scopeTracked(Builder $query): Builder
+    {
+        return $query->where('track_inventory', true);
+    }
+
+    public function scopeLowStock(Builder $query): Builder
+    {
+        return $query->where('track_inventory', true)
+            ->whereNotNull('reorder_level')
+            ->whereColumn('quantity', '<=', 'reorder_level');
     }
 }

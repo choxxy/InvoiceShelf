@@ -104,6 +104,8 @@ const itemColumns = computed<TableColumn[]>(() => [
     tdClass: 'font-medium text-heading',
     mobile: 'title',
   },
+  { key: 'sku', label: t('items.sku') },
+  { key: 'stock', label: t('items.stock') },
   { key: 'unit_name', label: t('items.unit'), mobile: 'subtitle' },
   { key: 'price', label: t('items.price'), align: 'end', mobile: 'trailing' },
   { key: 'created_at', label: t('items.added_on') },
@@ -362,6 +364,35 @@ function removeMultipleItems(): void {
           >
             <BaseText :text="row.data.name" />
           </router-link>
+        </template>
+
+        <template #cell-sku="{ row }">
+          <span class="text-sm text-muted">
+            {{ row.data.sku || '—' }}
+          </span>
+        </template>
+
+        <template #cell-stock="{ row }">
+          <template v-if="row.data.track_inventory">
+            <BaseBadge
+              v-if="row.data.quantity <= 0"
+              status="danger"
+            >
+              {{ $t('items.out_of_stock') }}
+            </BaseBadge>
+            <BaseBadge
+              v-else-if="row.data.reorder_level && row.data.quantity <= row.data.reorder_level"
+              status="warning"
+            >
+              {{ row.data.quantity }} (Low)
+            </BaseBadge>
+            <span v-else class="text-sm font-medium text-heading">
+              {{ row.data.quantity }}
+            </span>
+          </template>
+          <span v-else class="text-xs text-muted">
+            —
+          </span>
         </template>
 
         <template #cell-unit_name="{ row }">

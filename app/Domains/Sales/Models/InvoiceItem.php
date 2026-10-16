@@ -54,6 +54,10 @@ class InvoiceItem extends Model
             'total' => 'integer',
             'discount' => 'float',
             'quantity' => 'float',
+            'width' => 'float',
+            'length' => 'float',
+            'count' => 'integer',
+            'area' => 'float',
             'discount_val' => 'integer',
             'tax' => 'integer',
         ];

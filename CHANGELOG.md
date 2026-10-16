@@ -7,6 +7,20 @@ section beneath it is what CI publishes to the updater — see
 The 2.x line has its own CHANGELOG.md on the `2.x` branch. Releases are also on
 GitHub: https://github.com/InvoiceShelf/InvoiceShelf/releases
 
+## 3.0.0-alpha.11 - 2026-10-16
+
+Eleventh public alpha of InvoiceShelf 3.0. Adds inventory tracking for catalog items, item dimensions on invoices and estimates, and a dedicated product inventory report.
+
+⚠️ **Pre-release, not for production.** Back up your database before upgrading and use this release for evaluation and testing only.
+
+### Highlights
+
+- **Product inventory tracking.** Track quantity in stock and SKU on catalog items. Creating invoices decrements available stock, and deleting an invoice restores the inventory.
+- **Item dimensions on invoices and estimates.** Support custom dimensions (length, width, and item count) on invoice and estimate line items.
+- **Product inventory report.** View, filter, and export company product inventory and stock levels.
+
+Docker: `invoiceshelf/invoiceshelf:3.0.0-alpha.11` or `ghcr.io/invoiceshelf/invoiceshelf:3.0.0-alpha.11` (also `:next`).
+
 ## 3.0.0-alpha.10 - 2026-09-26
 
 Tenth public alpha of InvoiceShelf 3.0. Owners of a managed install can now add official modules themselves when their host allows it, and every Docker start checks installed modules against the running version.

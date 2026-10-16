@@ -164,9 +164,16 @@ async function loadData(): Promise<void> {
       itemStore.currentItem.tax_per_item === true
         ? 'YES'
         : 'NO'
+    itemStore.currentItem.track_inventory = Boolean(itemStore.currentItem.track_inventory)
   }
 
   isFetchingInitialData.value = false
+}
+
+function onInitialQuantityChange(): void {
+  if (!isEdit.value) {
+    itemStore.currentItem.quantity = Number(itemStore.currentItem.initial_quantity || 0)
+  }
 }
 
 async function submitItem(): Promise<void> {
@@ -264,6 +271,66 @@ async function submitItem(): Promise<void> {
               @input="v$.currentItem.name.$touch()"
             />
           </BaseInputGroup>
+
+          <BaseInputGroup
+            :label="$t('items.sku')"
+            :content-loading="isFetchingInitialData"
+          >
+            <BaseInput
+              v-model="itemStore.currentItem.sku"
+              :content-loading="isFetchingInitialData"
+              placeholder="e.g. PRD-001"
+            />
+          </BaseInputGroup>
+
+          <BaseSwitchSection
+            v-model="itemStore.currentItem.track_inventory"
+            :title="$t('items.track_inventory')"
+            :description="$t('items.track_inventory_desc')"
+          />
+
+          <template v-if="itemStore.currentItem.track_inventory">
+            <BaseInputGrid layout="two-column">
+              <BaseInputGroup
+                :label="$t('items.initial_quantity')"
+                :content-loading="isFetchingInitialData"
+              >
+                <BaseInput
+                  v-model.number="itemStore.currentItem.initial_quantity"
+                  :content-loading="isFetchingInitialData"
+                  type="number"
+                  min="0"
+                  step="any"
+                  @change="onInitialQuantityChange"
+                />
+              </BaseInputGroup>
+
+              <BaseInputGroup
+                :label="$t('items.current_stock')"
+                :content-loading="isFetchingInitialData"
+              >
+                <BaseInput
+                  v-model.number="itemStore.currentItem.quantity"
+                  :content-loading="isFetchingInitialData"
+                  type="number"
+                  step="any"
+                />
+              </BaseInputGroup>
+            </BaseInputGrid>
+
+            <BaseInputGroup
+              :label="$t('items.reorder_level')"
+              :content-loading="isFetchingInitialData"
+            >
+              <BaseInput
+                v-model.number="itemStore.currentItem.reorder_level"
+                :content-loading="isFetchingInitialData"
+                type="number"
+                min="0"
+                step="any"
+              />
+            </BaseInputGroup>
+          </template>
 
           <BaseInputGroup
             :label="$t('items.price')"

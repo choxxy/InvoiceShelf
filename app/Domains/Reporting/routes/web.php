@@ -11,12 +11,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/customers/{customer}/statement', CustomerStatementReportController::class);
 
+use App\Domains\Reporting\Http\Controllers\ProductInventoryReportController;
+
 // Each financial report is addressed by the hash of the company it covers.
 // The hash names the company and nothing more: the controllers still check
 // the session for the report ability and for membership of that company.
 $hashedReports = [
     '/sales/customers' => CustomerSalesReportController::class,
     '/sales/items' => ItemSalesReportController::class,
+    '/inventory' => ProductInventoryReportController::class,
     '/expenses' => ExpensesReportController::class,
     '/tax-summary' => TaxSummaryReportController::class,
     '/purchases' => PurchasesReportController::class,

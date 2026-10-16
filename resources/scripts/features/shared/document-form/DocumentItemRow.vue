@@ -51,6 +51,70 @@
       </BaseDropdown>
     </div>
 
+    <div>
+      <div class="flex items-center gap-2">
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
+          @click="toggleDimensions"
+        >
+          <BaseIcon name="SparklesIcon" class="w-3.5 h-3.5" />
+          {{ showDimensions ? $t('general.hide') : (hasDimensions ? `${itemData.width}ft × ${itemData.length}ft (${area} sq ft)` : `+ ${$t('items.dimensions')}`) }}
+        </button>
+      </div>
+
+      <div
+        v-if="showDimensions"
+        class="mt-2 p-2.5 rounded-lg bg-surface-secondary border border-line-light flex flex-wrap items-center gap-2.5 text-xs"
+      >
+        <label class="flex items-center gap-1.5">
+          <span class="text-muted">{{ $t('items.width') }}:</span>
+          <BaseInput
+            v-model.number="width"
+            type="number"
+            step="any"
+            min="0"
+            class="w-20 [&_input]:h-7 [&_input]:text-xs"
+          />
+        </label>
+
+        <span class="text-muted">×</span>
+
+        <label class="flex items-center gap-1.5">
+          <span class="text-muted">{{ $t('items.length') }}:</span>
+          <BaseInput
+            v-model.number="length"
+            type="number"
+            step="any"
+            min="0"
+            class="w-20 [&_input]:h-7 [&_input]:text-xs"
+          />
+        </label>
+
+        <label class="flex items-center gap-1.5">
+          <span class="text-muted">{{ $t('items.carpet_count') }}:</span>
+          <BaseInput
+            v-model.number="count"
+            type="number"
+            min="1"
+            class="w-16 [&_input]:h-7 [&_input]:text-xs"
+          />
+        </label>
+
+        <div class="flex items-center gap-1.5 font-medium text-primary-600">
+          <span>= {{ area }} sq ft</span>
+          <button
+            type="button"
+            class="text-muted hover:text-danger text-xs ms-1 p-0.5 rounded"
+            title="Clear dimensions"
+            @click="clearDimensions"
+          >
+            <BaseIcon name="XMarkIcon" class="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-3">
       <label class="flex flex-col gap-1.5 min-w-0">
         <span class="text-xs font-medium text-muted">{{ $t('invoices.item.quantity') }}</span>
@@ -209,19 +273,83 @@
                 >
                   <DragIcon aria-hidden="true" />
                 </button>
-                <BaseItemSelect
-                  type="Invoice"
-                  :item="itemData"
-                  :invalid="v$.name.$error"
-                  :invalid-description="v$.description.$error"
-                  :taxes="itemData.taxes"
-                  :index="index"
-                  :store-prop="storeProp"
-                  :store="store"
-                  @search="searchVal"
-                  @select="onSelectItem"
-                  @update:description="updateItemAttribute('description', $event)"
-                />
+                <div class="flex-1 min-w-0">
+                  <BaseItemSelect
+                    type="Invoice"
+                    :item="itemData"
+                    :invalid="v$.name.$error"
+                    :invalid-description="v$.description.$error"
+                    :taxes="itemData.taxes"
+                    :index="index"
+                    :store-prop="storeProp"
+                    :store="store"
+                    @search="searchVal"
+                    @select="onSelectItem"
+                    @update:description="updateItemAttribute('description', $event)"
+                  />
+
+                  <div class="mt-2 flex items-center gap-2">
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-1 text-xs font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                      @click="toggleDimensions"
+                    >
+                      <BaseIcon name="SparklesIcon" class="w-3.5 h-3.5" />
+                      {{ showDimensions ? $t('general.hide') : (hasDimensions ? `${itemData.width}ft × ${itemData.length}ft (${area} sq ft)` : `+ ${$t('items.dimensions')}`) }}
+                    </button>
+                  </div>
+
+                  <div
+                    v-if="showDimensions"
+                    class="mt-2 p-2.5 rounded-lg bg-surface-secondary border border-line-light flex flex-wrap items-center gap-2.5 text-xs"
+                  >
+                    <label class="flex items-center gap-1.5">
+                      <span class="text-muted">{{ $t('items.width') }}:</span>
+                      <BaseInput
+                        v-model.number="width"
+                        type="number"
+                        step="any"
+                        min="0"
+                        class="w-20 [&_input]:h-7 [&_input]:text-xs"
+                      />
+                    </label>
+
+                    <span class="text-muted">×</span>
+
+                    <label class="flex items-center gap-1.5">
+                      <span class="text-muted">{{ $t('items.length') }}:</span>
+                      <BaseInput
+                        v-model.number="length"
+                        type="number"
+                        step="any"
+                        min="0"
+                        class="w-20 [&_input]:h-7 [&_input]:text-xs"
+                      />
+                    </label>
+
+                    <label class="flex items-center gap-1.5">
+                      <span class="text-muted">{{ $t('items.carpet_count') }}:</span>
+                      <BaseInput
+                        v-model.number="count"
+                        type="number"
+                        min="1"
+                        class="w-16 [&_input]:h-7 [&_input]:text-xs"
+                      />
+                    </label>
+
+                    <div class="flex items-center gap-1.5 font-medium text-primary-600">
+                      <span>= {{ area }} sq ft</span>
+                      <button
+                        type="button"
+                        class="text-muted hover:text-danger text-xs ms-1 p-0.5 rounded"
+                        title="Clear dimensions"
+                        @click="clearDimensions"
+                      >
+                        <BaseIcon name="XMarkIcon" class="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </td>
 
@@ -534,6 +662,80 @@ const discountTypeLabel = computed<string>(() => {
 
   return t('invoices.item.discount_type', { type })
 })
+
+const showDimensions = ref<boolean>(!!(props.itemData.width && props.itemData.length))
+
+const hasDimensions = computed<boolean>(() => {
+  return !!(props.itemData.width && props.itemData.length)
+})
+
+const width = computed<number | null>({
+  get: () => (props.itemData.width != null ? Number(props.itemData.width) : null),
+  set: (val: number | null) => {
+    updateItemAttribute('width', val ? Number(val) : null)
+    recomputeDimensions()
+  },
+})
+
+const length = computed<number | null>({
+  get: () => (props.itemData.length != null ? Number(props.itemData.length) : null),
+  set: (val: number | null) => {
+    updateItemAttribute('length', val ? Number(val) : null)
+    recomputeDimensions()
+  },
+})
+
+const count = computed<number>({
+  get: () => (props.itemData.count != null ? Number(props.itemData.count) : 1),
+  set: (val: number) => {
+    updateItemAttribute('count', val ? Number(val) : 1)
+    recomputeDimensions()
+  },
+})
+
+const area = computed<number>(() => {
+  const w = Number(props.itemData.width || 0)
+  const l = Number(props.itemData.length || 0)
+  const c = Number(props.itemData.count || 1)
+  return Math.round(w * l * c * 100) / 100
+})
+
+function recomputeDimensions(): void {
+  const w = Number(props.itemData.width)
+  const l = Number(props.itemData.length)
+  const c = Number(props.itemData.count || 1)
+
+  if (w > 0 && l > 0) {
+    const totalSqFt = Math.round(w * l * c * 100) / 100
+    updateItemAttribute('area', totalSqFt)
+    updateItemAttribute('quantity', totalSqFt)
+    if (!props.itemData.unit_name) {
+      updateItemAttribute('unit_name', 'sq ft')
+    }
+  }
+}
+
+function clearDimensions(): void {
+  updateItemAttribute('width', null)
+  updateItemAttribute('length', null)
+  updateItemAttribute('count', null)
+  updateItemAttribute('area', null)
+  showDimensions.value = false
+}
+
+function toggleDimensions(): void {
+  showDimensions.value = !showDimensions.value
+}
+
+watch(
+  () => [props.itemData.width, props.itemData.length],
+  ([w, l]) => {
+    if (w && l) {
+      showDimensions.value = true
+    }
+  },
+  { immediate: true },
+)
 
 const handle = ref<HTMLButtonElement | null>(null)
 

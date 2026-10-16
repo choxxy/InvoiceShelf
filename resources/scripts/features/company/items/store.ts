@@ -21,8 +21,12 @@ export interface ItemForm {
   price: number
   unit_id: string | number | null
   unit: Unit | null
-  taxes: Tax[]
   tax_per_item?: boolean | number | string
+  sku?: string
+  track_inventory?: boolean
+  initial_quantity?: number
+  quantity?: number
+  reorder_level?: number | null
   /** Definitions to answer, filled by the form. */
   customFields: CustomFieldValue[]
   /** Answers already on record, as the API returns them. */
@@ -43,6 +47,11 @@ function createItemStub(): ItemForm {
     unit: null,
     taxes: [],
     tax_per_item: false,
+    sku: '',
+    track_inventory: false,
+    initial_quantity: 0,
+    quantity: 0,
+    reorder_level: null,
     customFields: [],
     fields: [],
   }

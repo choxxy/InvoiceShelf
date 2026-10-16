@@ -25,6 +25,10 @@ class ItemService
         $attributes['creator_id'] = $creatorId;
         $attributes['currency_id'] = CompanySetting::getSetting('currency', $companyId);
 
+        if (! empty($attributes['track_inventory']) && ! isset($attributes['quantity']) && isset($attributes['initial_quantity'])) {
+            $attributes['quantity'] = $attributes['initial_quantity'];
+        }
+
         $item = Item::create($attributes);
 
         $this->itemTaxManager->attach($item, $taxes, $companyId);

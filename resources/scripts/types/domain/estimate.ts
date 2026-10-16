@@ -21,6 +21,10 @@ export interface EstimateItem {
   description: string | null
   discount_type: DiscountType
   quantity: number
+  width?: number | null
+  length?: number | null
+  count?: number | null
+  area?: number | null
   unit_name: string | null
   discount: number
   discount_val: number

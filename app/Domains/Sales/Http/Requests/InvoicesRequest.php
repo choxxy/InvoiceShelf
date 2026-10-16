@@ -53,6 +53,10 @@ class InvoicesRequest extends FormRequest
             'items.*.name' => 'required',
             'items.*.quantity' => 'numeric|required',
             'items.*.price' => 'numeric|required',
+            'items.*.width' => 'nullable|numeric|min:0',
+            'items.*.length' => 'nullable|numeric|min:0',
+            'items.*.count' => 'nullable|integer|min:1',
+            'items.*.area' => 'nullable|numeric|min:0',
             ...$this->customFieldRules(),
             ...$this->customFieldRules('items.*.custom_fields'),
         ];

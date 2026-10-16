@@ -22,6 +22,12 @@ export interface Item {
   updated_at: string
   tax_per_item: string | null
   formatted_created_at: string
+  sku?: string | null
+  track_inventory?: boolean
+  initial_quantity?: number
+  quantity?: number
+  reorder_level?: number | null
+  quantity_sold?: number
   unit?: Unit
   company?: Company
   taxes?: Tax[]

@@ -449,7 +449,24 @@
     "confirm_delete": "You will not be able to recover this Item | You will not be able to recover these Items",
     "created_message": "Item created successfully",
     "updated_message": "Item updated successfully",
-    "deleted_message": "Item deleted successfully | Items deleted successfully"
+    "deleted_message": "Item deleted successfully | Items deleted successfully",
+    "sku": "SKU / Code",
+    "track_inventory": "Track Inventory",
+    "track_inventory_desc": "Automatically track stock counts as this product is sold on invoices.",
+    "initial_quantity": "Initial Stock",
+    "current_stock": "Current Stock",
+    "stock": "Stock",
+    "in_stock": "In Stock: {count}",
+    "out_of_stock": "Out of Stock",
+    "low_stock": "Low Stock: {count}",
+    "reorder_level": "Reorder Level",
+    "dimensions": "Carpet Dimensions",
+    "width": "Width (ft)",
+    "length": "Length (ft)",
+    "carpet_count": "Count",
+    "carpet_area": "Area (sq ft)",
+    "per_unit_cost": "Cost per sq ft",
+    "inventory_report": "Product Inventory Report"
   },
   "estimates": {
     "title": "Estimates",
@@ -1222,7 +1239,8 @@
       "report_type": "Report Type",
       "sort": {
         "by_customer": "By Customer",
-        "by_item": "By Item"
+        "by_item": "By Item",
+        "by_inventory": "Product Inventory"
       }
     },
     "taxes": {

@@ -40,6 +40,12 @@ class ItemResource extends JsonResource
             'updated_at' => $this->updated_at,
             'tax_per_item' => $this->tax_per_item,
             'formatted_created_at' => $this->formattedCreatedAt,
+            'sku' => $this->sku,
+            'track_inventory' => (bool) $this->track_inventory,
+            'initial_quantity' => (float) ($this->initial_quantity ?? 0),
+            'quantity' => (float) ($this->quantity ?? 0),
+            'reorder_level' => $this->reorder_level !== null ? (float) $this->reorder_level : null,
+            'quantity_sold' => (float) ($this->quantity_sold ?? 0),
             // Loaded by the caller: the listing eager-loads it, so asking
             // the database per row would undo that.
             'fields' => CustomFieldValueResource::collection($this->whenLoaded('fields')),

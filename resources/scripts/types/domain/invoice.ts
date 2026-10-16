@@ -61,6 +61,10 @@ export interface InvoiceItem {
   discount_type: DiscountType
   price: number
   quantity: number
+  width?: number | null
+  length?: number | null
+  count?: number | null
+  area?: number | null
   unit_name: string | null
   discount: number
   discount_val: number

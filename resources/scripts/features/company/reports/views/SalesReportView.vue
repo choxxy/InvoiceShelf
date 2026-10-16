@@ -25,12 +25,14 @@ const { presets, period, formData, syncUrl } = useReportPeriod(() =>
 const reportTypes = ref<ReportTypeOption[]>([
   { label: t('reports.sales.sort.by_customer'), value: 'By Customer' },
   { label: t('reports.sales.sort.by_item'), value: 'By Item' },
+  { label: t('reports.sales.sort.by_inventory'), value: 'Inventory' },
 ])
 const selectedType = ref<string>('By Customer')
 const url = ref<string | null>(null)
 const pdfPane = ref<InstanceType<typeof ReportPdfPane> | null>(null)
 const customerSiteURL = ref<string | null>(null)
 const itemsSiteURL = ref<string | null>(null)
+const inventorySiteURL = ref<string | null>(null)
 
 const getReportUrl = computed<string | null>(() => url.value)
 
@@ -42,6 +44,10 @@ const customerDateRangeUrl = computed<string>(() => {
 
 const itemDateRangeUrl = computed<string>(() => {
   return `${itemsSiteURL.value}?from_date=${formatDate(formData.from_date)}&to_date=${formatDate(formData.to_date)}`
+})
+
+const inventoryDateRangeUrl = computed<string>(() => {
+  return `${inventorySiteURL.value}?from_date=${formatDate(formData.from_date)}&to_date=${formatDate(formData.to_date)}`
 })
 
 // The header button lives on the layout above, so the tab on screen lends it
@@ -59,12 +65,17 @@ onMounted(async () => {
 
   customerSiteURL.value = `/reports/sales/customers/${selectedCompany.value?.unique_hash}`
   itemsSiteURL.value = `/reports/sales/items/${selectedCompany.value?.unique_hash}`
+  inventorySiteURL.value = `/reports/inventory/${selectedCompany.value?.unique_hash}`
   getInitialReport()
 })
 
 function getInitialReport(): void {
   if (selectedType.value === 'By Customer') {
     url.value = customerDateRangeUrl.value
+    return
+  }
+  if (selectedType.value === 'Inventory') {
+    url.value = inventoryDateRangeUrl.value
     return
   }
   url.value = itemDateRangeUrl.value
@@ -74,6 +85,10 @@ function getReports(persist = true): boolean {
   if (persist) void syncUrl()
   if (selectedType.value === 'By Customer') {
     url.value = customerDateRangeUrl.value
+    return true
+  }
+  if (selectedType.value === 'Inventory') {
+    url.value = inventoryDateRangeUrl.value
     return true
   }
   url.value = itemDateRangeUrl.value

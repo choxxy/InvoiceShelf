@@ -5,6 +5,7 @@ namespace App\Domains\Sales\Application;
 use App;
 use App\Domains\Accounts\Models\Company;
 use App\Domains\Accounts\Models\CompanySetting;
+use App\Domains\Catalog\Application\InventoryService;
 use App\Domains\Metadata\Contracts\CustomFieldValueWriter;
 use App\Domains\Metadata\Models\CustomField;
 use App\Domains\Sales\Contracts\DocumentExchangeRateRecorder;
@@ -38,6 +39,7 @@ class InvoiceService implements InvoicePdfDataProvider
         private readonly CustomFieldValueWriter $customFieldValueWriter,
         private readonly DocumentExchangeRateRecorder $exchangeRateRecorder,
         private readonly InvoiceEmailSender $invoiceEmailSender,
+        private readonly InventoryService $inventoryService,
     ) {}
 
     /**
@@ -70,6 +72,7 @@ class InvoiceService implements InvoicePdfDataProvider
         $invoice->save();
 
         $this->documentItemService->createItems($invoice, $items);
+        $this->inventoryService->recordInvoice($invoice);
 
         $companyCurrency = CompanySetting::getSetting('currency', $invoice->company_id);
 
@@ -153,10 +156,13 @@ class InvoiceService implements InvoicePdfDataProvider
             }
         }
 
+        $this->inventoryService->restoreInvoice($invoice);
+
         $invoice->items()->delete();
         $invoice->taxes()->delete();
 
         $this->documentItemService->createItems($invoice, $items);
+        $this->inventoryService->recordInvoice($invoice->fresh(['items']));
 
         if ($taxes) {
             $this->documentItemService->createTaxes($invoice, $taxes);
@@ -195,6 +201,8 @@ class InvoiceService implements InvoicePdfDataProvider
             if ($invoice->isCreditNote() && $invoice->related_invoice_id && ! $ids->contains($invoice->related_invoice_id)) {
                 $creditedInvoiceIds[$invoice->related_invoice_id] = $invoice->related_invoice_id;
             }
+
+            $this->inventoryService->restoreInvoice($invoice);
 
             $invoice->delete();
         }
