@@ -17,7 +17,7 @@ permissions:
 # as in publish.yaml, which gates the moving :latest image tags on it — bump both
 # on this branch, and publish.yaml on 2.x, when 3.0.0 GA is tagged.
 env:
-  LATEST_MAJOR: "2"
+  LATEST_MAJOR: "3"
 
 jobs:
   tests:
